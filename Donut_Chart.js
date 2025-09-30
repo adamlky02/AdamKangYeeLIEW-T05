@@ -4,18 +4,19 @@ d3.csv("Ex5/Ex5_TV_energy_Allsizes_byScreenType.csv", d3.autoType).then(data => 
     const radius = Math.min(width, height) / 2 - margin;
 
     // Group data by Screen_Tech and sum energy consumption
-    const energyByTech = d3.rollup(
-        data,
-        v => d3.sum(v, d => d["Mean(Labelled energy consumption (kWh/year))"]),
-        d => d.Screen_Tech
-    );
-    const chartData = Array.from(energyByTech, ([Screen_Tech, Energy]) => ({ Screen_Tech, Energy }));
+    const totalEnergy = d3.sum(data, d => d["Mean(Labelled energy consumption (kWh/year))"]);
+    const chartData = data.map(d => ({
+        Screen_Tech: d.Screen_Tech,
+        Energy: d["Mean(Labelled energy consumption (kWh/year))"],
+        Percent: ((d["Mean(Labelled energy consumption (kWh/year))"] / totalEnergy) * 100).toFixed(1)
+    }));
 
     const svg = d3.select("#donutChart")
         .attr("width", width)
-        .attr("height", height)
-        .append("g")
-        .attr("transform", `translate(${width / 2},${height / 2})`);
+        .attr("height", height);
+
+    const chartGroup = svg.append("g")
+        .attr("transform", `translate(${width / 2 - 60},${height / 2})`);
 
     const color = d3.scaleOrdinal()
         .domain(chartData.map(d => d.Screen_Tech))
@@ -28,18 +29,46 @@ d3.csv("Ex5/Ex5_TV_energy_Allsizes_byScreenType.csv", d3.autoType).then(data => 
         .innerRadius(radius * 0.6)
         .outerRadius(radius);
 
-    svg.selectAll("path")
+    // Tooltip
+    const tooltip = d3.select("body").append("div")
+        .attr("class", "donut-tooltip")
+        .style("position", "absolute")
+        .style("background", "#fff")
+        .style("border", "1px solid #ccc")
+        .style("padding", "8px")
+        .style("border-radius", "4px")
+        .style("pointer-events", "none")
+        .style("display", "none");
+
+    chartGroup.selectAll("path")
         .data(pie(chartData))
         .enter()
         .append("path")
         .attr("d", arc)
         .attr("fill", d => color(d.data.Screen_Tech))
         .attr("stroke", "#fff")
-        .attr("stroke-width", 2);
+        .attr("stroke-width", 2)
+        .on("mouseover", function(event, d) {
+            tooltip.style("display", "block")
+                .html(
+                    `<strong>${d.data.Screen_Tech}</strong><br>
+                    Energy: ${d.data.Energy.toFixed(2)} kWh/year<br>
+                    Percentage: ${d.data.Percent}%`
+                );
+            d3.select(this).attr("opacity", 0.7);
+        })
+        .on("mousemove", function(event) {
+            tooltip.style("left", (event.pageX + 10) + "px")
+                .style("top", (event.pageY - 28) + "px");
+        })
+        .on("mouseout", function() {
+            tooltip.style("display", "none");
+            d3.select(this).attr("opacity", 1);
+        });
 
-    // Legend
+    // Legend (right side)
     const legend = svg.append("g")
-        .attr("transform", `translate(${radius + 40 - width / 2},${-radius})`);
+        .attr("transform", `translate(${width - 150},${height / 2 - chartData.length * 15})`);
 
     chartData.forEach((d, i) => {
         legend.append("circle")
@@ -50,7 +79,7 @@ d3.csv("Ex5/Ex5_TV_energy_Allsizes_byScreenType.csv", d3.autoType).then(data => 
         legend.append("text")
             .attr("x", 18)
             .attr("y", i * 30 + 5)
-            .text(d.Screen_Tech)
+            .text(`${d.Screen_Tech} (${d.Percent}%)`)
             .attr("font-size", "15px")
             .attr("alignment-baseline", "middle");
     });
