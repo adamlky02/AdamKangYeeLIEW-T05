@@ -3,8 +3,7 @@ d3.csv("Ex5/Ex5_TV_energy_Allsizes_byScreenType.csv", d3.autoType).then(data => 
     const width = 400, height = 400, margin = 40;
     const radius = Math.min(width, height) / 2 - margin;
 
-    const svg = d3.select("body")
-        .append("svg")
+    const svg = d3.select("#donutChart")
         .attr("width", width + 200) // extra space for legend
         .attr("height", height)
         .append("g")
