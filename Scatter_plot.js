@@ -10,6 +10,11 @@ d3.csv("Ex5/Ex5_TV_energy.csv", d3.autoType).then(data => {
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
+    // Color scale for screen_tech
+    const color = d3.scaleOrdinal()
+        .domain([...new Set(data.map(d => d.screen_tech))])
+        .range(d3.schemeCategory10);
+
     // Scales
     const x = d3.scaleLinear()
         .domain(d3.extent(data, d => d.star2))
@@ -38,7 +43,7 @@ d3.csv("Ex5/Ex5_TV_energy.csv", d3.autoType).then(data => {
         .attr("text-anchor", "middle")
         .text("Energy Consumption (kWh)");
 
-    // Points
+    // Points colored by screen_tech
     svg.selectAll("circle")
         .data(data)
         .enter()
@@ -46,6 +51,6 @@ d3.csv("Ex5/Ex5_TV_energy.csv", d3.autoType).then(data => {
         .attr("cx", d => x(d.star2))
         .attr("cy", d => y(d.energy_consumpt))
         .attr("r", 4)
-        .attr("fill", "#1976d2")
+        .attr("fill", d => color(d.screen_tech))
         .attr("opacity", 0.7);
 });
