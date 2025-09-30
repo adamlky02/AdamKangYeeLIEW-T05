@@ -1,0 +1,31 @@
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f4f6f8;
+    color: #333;
+}
+
+header {
+    background: #1976d2;
+    color: #fff;
+    padding: 1.5rem 0;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(25, 118, 210, 0.1);
+}
+
+main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 70vh;
+}
+
+
+footer {
+    text-align: center;
+    padding: 1rem 0;
+    background: #e3eafc;
+    color: #1976d2;
+    font-size: 1rem;
+    box-shadow: 0 -2px 8px rgba(25, 118, 210, 0.05);
+}
