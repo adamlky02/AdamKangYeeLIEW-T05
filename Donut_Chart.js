@@ -40,7 +40,7 @@ d3.csv("Ex5/Ex5_TV_energy_Allsizes_byScreenType.csv", d3.autoType).then(data => 
         .style("pointer-events", "none")
         .style("display", "none");
 
-    chartGroup.selectAll("path")
+    const arcs = chartGroup.selectAll("path")
         .data(pie(chartData))
         .enter()
         .append("path")
@@ -66,7 +66,20 @@ d3.csv("Ex5/Ex5_TV_energy_Allsizes_byScreenType.csv", d3.autoType).then(data => 
             d3.select(this).attr("opacity", 1);
         });
 
-    // Legend (right side)
+    // Add percentage text inside each slice
+    chartGroup.selectAll("text")
+        .data(pie(chartData))
+        .enter()
+        .append("text")
+        .attr("transform", d => `translate(${arc.centroid(d)})`)
+        .attr("text-anchor", "middle")
+        .attr("dy", "0.35em")
+        .attr("fill", "#fff")
+        .attr("font-size", "16px")
+        .attr("font-weight", "bold")
+        .text(d => `${d.data.Percent}%`);
+
+    // Legend (right side, without percentage)
     const legend = svg.append("g")
         .attr("transform", `translate(${width - 150},${height / 2 - chartData.length * 15})`);
 
@@ -79,7 +92,7 @@ d3.csv("Ex5/Ex5_TV_energy_Allsizes_byScreenType.csv", d3.autoType).then(data => 
         legend.append("text")
             .attr("x", 18)
             .attr("y", i * 30 + 5)
-            .text(`${d.Screen_Tech} (${d.Percent}%)`)
+            .text(d.Screen_Tech)
             .attr("font-size", "15px")
             .attr("alignment-baseline", "middle");
     });
