@@ -5,14 +5,15 @@ d3.csv("Ex5/Ex5_TV_energy.csv", d3.autoType).then(data => {
     const height = 400 - margin.top - margin.bottom;
 
     const svg = d3.select("#scatterPlot")
-        .attr("width", width + margin.left + margin.right)
+        .attr("width", width + margin.left + margin.right + 150) // extra space for legend
         .attr("height", height + margin.top + margin.bottom)
         .append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     // Color scale for screen_tech
+    const screenTypes = [...new Set(data.map(d => d.screen_tech))];
     const color = d3.scaleOrdinal()
-        .domain([...new Set(data.map(d => d.screen_tech))])
+        .domain(screenTypes)
         .range(d3.schemeCategory10);
 
     // Scales
@@ -53,4 +54,23 @@ d3.csv("Ex5/Ex5_TV_energy.csv", d3.autoType).then(data => {
         .attr("r", 4)
         .attr("fill", d => color(d.screen_tech))
         .attr("opacity", 0.7);
+
+    // Legend
+    const legend = svg.append("g")
+        .attr("transform", `translate(${width + 30}, 0)`);
+
+    screenTypes.forEach((type, i) => {
+        legend.append("circle")
+            .attr("cx", 0)
+            .attr("cy", i * 25)
+            .attr("r", 7)
+            .attr("fill", color(type));
+
+        legend.append("text")
+            .attr("x", 18)
+            .attr("y", i * 25 + 5)
+            .text(type)
+            .attr("font-size", "14px")
+            .attr("alignment-baseline", "middle");
+    });
 });
