@@ -40,6 +40,16 @@ d3.csv("Ex5/Ex5_TV_energy.csv", d3.autoType).then(data => {
         .attr("text-anchor", "middle")
         .text("Energy Consumption (kWh)");
 
+    // `Scatter_plot.js` — insert after the `append("g").attr("transform", ...)` line (svg is the group)
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", -margin.top / 2)
+        .attr("text-anchor", "middle")
+        .style("font-size", "16px")
+        .style("font-weight", "600")
+        .text("Energy consumption vs Star rating");
+
+
     // Tooltip
     const tooltip = d3.select("body").append("div")
         .attr("class", "donut-tooltip")
@@ -98,3 +108,6 @@ d3.csv("Ex5/Ex5_TV_energy.csv", d3.autoType).then(data => {
             .attr("alignment-baseline", "middle");
     });
 });
+
+
+
