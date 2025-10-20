@@ -36,9 +36,9 @@ d3.csv("Ex5/Ex5_TV_energy_55inchtv_byScreenType.csv", d3.autoType).then(data => 
         .attr("x", width / 2)
         .attr("y", -25)
         .attr("text-anchor", "middle")
-        .attr("font-size", "20px")
+        .attr("font-size", "15px")
         .attr("font-weight", "bold")
-        .text("Energy consumption for different screen technologies for 55inch TVs only)");
+        .text("Energy consumption for different screen technologies for 55inch TVs only");
 
     // Tooltip
     const tooltip = d3.select("body").append("div")
