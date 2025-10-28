@@ -75,7 +75,7 @@ footer {
 }
 
 /* responsive breakpoint: stack on small screens */
-@media (max-width: 900px) {
+@media (max-width: 1000px) {
     .Chart_Grid {
         grid-template-columns: 1fr;
         grid-auto-rows: minmax(300px, auto);
