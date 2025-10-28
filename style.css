@@ -30,30 +30,55 @@ footer {
     box-shadow: 0 -2px 8px rgba(25, 118, 210, 0.05);
 }
 
-.donut-tooltip {
-    font-size: 14px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
-    z-index: 10;
-}
 
-.chart_grid {
+.Chart_Grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    gap: 2rem;
+    grid-template-columns: repeat(2, minmax(320px, 1fr));
+    grid-auto-rows: minmax(320px, 1fr);
+    gap: 1.5rem;
     justify-items: center;
-    align-items: center;
+    align-items: stretch;
     width: 100%;
     max-width: 1300px;
     margin: 2rem auto;
+    padding: 0 1rem;
+    box-sizing: border-box;
 }
 
-.chart_grid > div {
+.Chart_Grid > div {
     background: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    padding: 1rem;
+    padding: 0.75rem;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    justify-content: center;
+    box-sizing: border-box;
+}
+
+/* Make SVGs scale to container */
+.Chart_Grid svg {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Keep tooltip above content */
+.donut-tooltip,
+.d3-tooltip {
+    position: absolute;
+    pointer-events: none;
+    z-index: 50;
+}
+
+/* responsive breakpoint: stack on small screens */
+@media (max-width: 900px) {
+    .Chart_Grid {
+        grid-template-columns: 1fr;
+        grid-auto-rows: minmax(300px, auto);
+        gap: 1rem;
+    }
 }

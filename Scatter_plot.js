@@ -4,6 +4,7 @@ d3.csv("Ex5/Ex5_TV_energy.csv", d3.autoType).then(data => {
     const width = 600 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
 
+
     const svg = d3.select("#scatterPlot")
         .attr("width", width + margin.left + margin.right + 150)
         .attr("height", height + margin.top + margin.bottom)
@@ -33,6 +34,7 @@ d3.csv("Ex5/Ex5_TV_energy.csv", d3.autoType).then(data => {
         .attr("y", height + 40)
         .attr("text-anchor", "middle")
         .text("Star Rating");
+
     svg.append("text")
         .attr("transform", "rotate(-90)")
         .attr("x", -height / 2)
@@ -40,15 +42,13 @@ d3.csv("Ex5/Ex5_TV_energy.csv", d3.autoType).then(data => {
         .attr("text-anchor", "middle")
         .text("Energy Consumption (kWh)");
 
-    // `Scatter_plot.js` — insert after the `append("g").attr("transform", ...)` line (svg is the group)
     svg.append("text")
         .attr("x", width / 2)
-        .attr("y", -margin.top / 2)
+        .attr("y", -25)
         .attr("text-anchor", "middle")
-        .style("font-size", "16px")
-        .style("font-weight", "600")
-        .text("Energy consumption vs Star rating");
-
+        .attr("font-size", "14px")
+        .style('font-weight', '600')
+        .text("Energy consumption vs star rating");
 
     // Tooltip
     const tooltip = d3.select("body").append("div")
@@ -108,6 +108,3 @@ d3.csv("Ex5/Ex5_TV_energy.csv", d3.autoType).then(data => {
             .attr("alignment-baseline", "middle");
     });
 });
-
-
-

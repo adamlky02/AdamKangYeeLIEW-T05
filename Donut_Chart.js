@@ -15,6 +15,15 @@ d3.csv("Ex5/Ex5_TV_energy_Allsizes_byScreenType.csv", d3.autoType).then(data => 
         .attr("width", width)
         .attr("height", height);
 
+    // Title (centered at the top)
+    svg.append("text")
+        .attr("x", width / 2)
+        .attr("y", 24)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "14px")
+        .style("font-weight", "600")
+        .text("Energy consumption for different screen technologies across all TVs combined");
+
     const chartGroup = svg.append("g")
         .attr("transform", `translate(${width / 2 - 60},${height / 2})`);
 
@@ -79,14 +88,7 @@ d3.csv("Ex5/Ex5_TV_energy_Allsizes_byScreenType.csv", d3.autoType).then(data => 
         .attr("font-weight", "bold")
         .text(d => `${d.data.Percent}%`);
 
-    // `Donut_Chart.js` — insert after creating `svg` (before or after `chartGroup`)
-    svg.append("text")
-        .attr("x", width / 2)
-        .attr("y", 24)
-        .attr("text-anchor", "middle")
-        .style("font-size", "14px")
-        .style("font-weight", "600")
-        .text("Energy consumption for different screen technologies across all TVs combined");
+
 
     // Legend (right side, without percentage)
     const legend = svg.append("g")
@@ -106,3 +108,4 @@ d3.csv("Ex5/Ex5_TV_energy_Allsizes_byScreenType.csv", d3.autoType).then(data => 
             .attr("alignment-baseline", "middle");
     });
 });
+
