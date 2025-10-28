@@ -1,14 +1,18 @@
+// javascript
 // Scatter_plot.js
 d3.csv("Ex5/Ex5_TV_energy.csv", d3.autoType).then(data => {
     const margin = {top: 40, right: 40, bottom: 60, left: 80};
     const width = 600 - margin.left - margin.right;
     const height = 400 - margin.top - margin.bottom;
+    const extraRight = 150; // space for legend
 
+    // outer/root SVG
+    const root = d3.select("#scatterPlot")
+        .attr("width", width + margin.left + margin.right + extraRight)
+        .attr("height", height + margin.top + margin.bottom);
 
-    const svg = d3.select("#scatterPlot")
-        .attr("width", width + margin.left + margin.right + 150)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
+    // inner drawing group
+    const svg = root.append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
     const screenTypes = [...new Set(data.map(d => d.screen_tech))];
@@ -62,10 +66,11 @@ d3.csv("Ex5/Ex5_TV_energy.csv", d3.autoType).then(data => {
         .style("display", "none");
 
     // Points with tooltip
-    svg.selectAll("circle")
+    svg.selectAll("circle.point")
         .data(data)
         .enter()
         .append("circle")
+        .classed("point", true)
         .attr("cx", d => x(d.star2))
         .attr("cy", d => y(d.energy_consumpt))
         .attr("r", 4)
@@ -90,21 +95,30 @@ d3.csv("Ex5/Ex5_TV_energy.csv", d3.autoType).then(data => {
             d3.select(this).attr("stroke", null);
         });
 
-    // Legend
-    const legend = svg.append("g")
-        .attr("transform", `translate(${width + 30}, 0)`);
+    // Legend appended to the outer SVG so it sits beside the chart
+    const legendX = width + margin.left - 50 ; // x position inside root SVG
+    const legendY = margin.top;               // y position inside root SVG
 
+    const legend = root.append("g")
+        .attr("transform", `translate(${legendX}, ${legendY})`)
+        .attr("class", "legend");
+
+    // for each screen type draw a circle and label text
     screenTypes.forEach((type, i) => {
+        const yOffset = i * 26;
         legend.append("circle")
             .attr("cx", 0)
-            .attr("cy", i * 25)
+            .attr("cy", yOffset)
             .attr("r", 7)
-            .attr("fill", color(type));
+            .attr("fill", color(type))
+            .attr("stroke", "#000")
+            .attr("stroke-width", 0.4);
+
         legend.append("text")
             .attr("x", 18)
-            .attr("y", i * 25 + 5)
+            .attr("y", yOffset + 5) // align middle
             .text(type)
-            .attr("font-size", "14px")
+            .attr("font-size", "13px")
             .attr("alignment-baseline", "middle");
     });
 });
